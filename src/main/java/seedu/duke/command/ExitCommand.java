@@ -5,7 +5,7 @@ import seedu.duke.storage.SecretMaster;
 /**
  * Represents a class to give a command to exit the password manager
  */
-public class ExitCommand extends Command{
+public class ExitCommand extends Command {
 
     /**
      * Creates an instance of ExitCommand.

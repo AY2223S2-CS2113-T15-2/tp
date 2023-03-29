@@ -9,11 +9,12 @@ import seedu.duke.storage.SecretMaster;
 import seedu.duke.secrets.Secret;
 import seedu.duke.storage.SecretSearcher;
 
-import java.io.IOException;
+import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileWriter;
+import java.io.FileReader;
+import java.io.IOException;
 import java.util.Hashtable;
-import java.util.Scanner;
 import java.util.ArrayList;
 
 /**
@@ -24,6 +25,7 @@ public class Backend {
     public static final String ENCRYPTION_IDENTIFIER = "DKENC";
     private static final String DATABASE_FOLDER = "assets";
     private static final String DATABASE_FILE = "database.txt";
+    private static final String DATABASE_FILEPATH = "./assets/database.txt";
 
     /**
      * Returns data from previous session as a SecretMaster Object.
@@ -53,9 +55,11 @@ public class Backend {
         }
 
         try {
-            Scanner reader = new Scanner(database);
-            while (reader.hasNextLine()) {
-                String[] inputArray = reader.nextLine().split(",");
+            // Scanner reader = new Scanner(database);
+            BufferedReader reader = new BufferedReader(new FileReader(DATABASE_FILEPATH));
+            String line = reader.readLine();
+            while (line != null) {
+                String[] inputArray = reader.readLine().split(",");
                 secretList = Backend.readAndUpdate(inputArray, secretList);
             }
             reader.close();
@@ -63,6 +67,9 @@ public class Backend {
             System.out.println(e);
         } catch (InvalidURLException e) {
             throw new RuntimeException(e);
+        } catch (NullPointerException e) {
+            // to change with UI
+            Ui.print("No Save File Detected");
         }
 
         //for secretEnumerator

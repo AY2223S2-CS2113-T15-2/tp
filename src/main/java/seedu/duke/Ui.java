@@ -6,6 +6,7 @@ import java.util.Scanner;
  * Ui class to handle all user interface printing.
  */
 public class Ui {
+    private static Scanner in = new Scanner(System.in);
 
     /**
      * Greets the user upon start up of the application.
@@ -25,21 +26,32 @@ public class Ui {
         System.out.print("_____________________________________________________\n");
     }
 
+    public static void print(String message) {
+        printLine();
+        System.out.println(message);
+        printLine();
+    }
+
     /**
      * Reads the user's command from the console.
      *
      * @return String containing user's command.
      */
     public static String readCommand() {
-        Scanner in = new Scanner(System.in);
-
         while (in.hasNextLine()) {
             return in.nextLine();
         }
-        in.close();
         return "";
     }
 
+    public static String readLine() {
+        if (in.hasNextLine()) {
+            return in.nextLine();
+        }
+        return "";
+    }
+
+    // TODO can this be removed with logging?
     /**
      * Prints error message to console.
      *
@@ -47,5 +59,9 @@ public class Ui {
      */
     public static void printError(String message) {
         System.out.println("Oops! Error encountered "+ message);
+    }
+
+    public static void close() {
+        in.close();
     }
 }

@@ -36,9 +36,8 @@ public class ViewCommand extends Command {
      *
      * @return the user input of the secret password
      */
-    public String inquirePassword() {
+    public String inquirePassword(Scanner in) {
         System.out.println("Enter secret password to reveal \"" + this.passwordName + "\":");
-        Scanner in = new Scanner(System.in);
         return in.nextLine();
     }
 

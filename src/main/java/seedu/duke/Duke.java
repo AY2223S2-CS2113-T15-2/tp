@@ -24,6 +24,8 @@ public class Duke {
      */
     public Duke() throws FolderExistsException, IllegalFolderNameException {
         secureNUSData = Backend.initialisation();
+        // secureNUSData = new SecretMaster();
+        // System.out.println("Remember to initialise");
     }
     /**
      * Main entry-point for the Duke application.
@@ -66,6 +68,7 @@ public class Duke {
             
             Ui.printLine(); //end line
         }
+        Ui.close();
         Backend.updateStorage(this.secureNUSData.listSecrets());
     }
 
