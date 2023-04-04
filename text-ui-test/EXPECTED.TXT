@@ -1,16 +1,33 @@
 _____________________________________________________
 No Save File Detected
 _____________________________________________________
-Welcome to secureNUS v1.0
+Welcome to secureNUS v2.1
+     .--------.
+    / .------. \
+   / /        \ \
+   | |        | |
+  _| |________| |_
+.' |_|        |_| '.
+'._____ ____ _____.'
+|     .'____'.     |
+'.__.'.'    '.'.__.'
+'.__  | NUS  |  __.'
+|   '.'.____.'.'   |
+'.____'.____.'____.'
+'.________________.'
+
 Current Features
-Adding a password      : new [NAME] /f [FOLDER_NAME]
-Adding a NUSNet ID     : new o/NUSNet [NAME] /f [FOLDER_NAME]
-Adding a Student ID    : new o/StudentID [NAME] /f [FOLDER_NAME] 
+Adding a password      : new NAME [f/FOLDER_NAME]
+Adding a NUSNet ID     : new o/NUSNet NAME [f/FOLDER_NAME
+Adding a Student ID    : new o/StudentID NAME [f/FOLDER_NAME]
+Adding a Credit Card   : new o/CreditCard NAME [f/FOLDER_NAME]
+Adding a Wifi Password : new o/WifiPassword NAME [f/FOLDER_NAME]
+Adding a Crypto Wallet : new o/Crypto NAME [f/FOLDER_NAME
 
 _____________________________________________________
-Please enter the url: 
-Please enter your username: 
-Please enter your password: 
+Please enter the URL:
+Please enter your username:
+Please enter your password:
 _____________________________________________________
 I have added a new basic password:
 
@@ -18,7 +35,7 @@ name     = password1
 folder   = unnamed
 url      = gg.com
 username = username1
-password = ********
+password = *******
 _____________________________________________________
 _____________________________________________________
 _____________________________________________________
@@ -29,6 +46,7 @@ Folder: unnamed
 Username: username1
 URL: gg.com
 Password: password1
+
 _____________________________________________________
 _____________________________________________________
 _____________________________________________________

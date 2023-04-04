@@ -1,2 +1,1 @@
-nusNetId,nusnet1,nusnet1,unnamed,e0123456,DKENCrxfsuzvj
-studentID,student2,student2,unnamed,A0123456R
+Password,password1,password1,unnamed,DKENCvtfsobnf2,DKENCqbttxpse2,gg.com

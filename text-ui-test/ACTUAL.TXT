@@ -1,45 +1,51 @@
 _____________________________________________________
 No Save File Detected
 _____________________________________________________
-Welcome to secureNUS v1.0
+Welcome to secureNUS v2.1
+     .--------.
+    / .------. \
+   / /        \ \
+   | |        | |
+  _| |________| |_
+.' |_|        |_| '.
+'._____ ____ _____.'
+|     .'____'.     |
+'.__.'.'    '.'.__.'
+'.__  | NUS  |  __.'
+|   '.'.____.'.'   |
+'.____'.____.'____.'
+'.________________.'
+
 Current Features
-Adding a password      : new [NAME] /f [FOLDER_NAME]
-Adding a NUSNet ID     : new o/NUSNet [NAME] /f [FOLDER_NAME]
-Adding a Student ID    : new o/StudentID [NAME] /f [FOLDER_NAME] 
+Adding a password      : new NAME [f/FOLDER_NAME]
+Adding a NUSNet ID     : new o/NUSNet NAME [f/FOLDER_NAME
+Adding a Student ID    : new o/StudentID NAME [f/FOLDER_NAME]
+Adding a Credit Card   : new o/CreditCard NAME [f/FOLDER_NAME]
+Adding a Wifi Password : new o/WifiPassword NAME [f/FOLDER_NAME]
+Adding a Crypto Wallet : new o/Crypto NAME [f/FOLDER_NAME
 
 _____________________________________________________
-Please enter YOUR NUS Net ID: 
-Please enter your NUS Net password: 
+Please enter the URL:
+Please enter your username:
+Please enter your password:
 _____________________________________________________
-I have added a new NUS Net ID password:
+I have added a new basic password:
 
-name       = nusnet1
-folder     = unnamed
-NUS Net ID = e0123456
-password   = *******
-_____________________________________________________
-_____________________________________________________
-Please enter your Student ID: 
-_____________________________________________________
-I have added a new Student ID:
-
-name       = student2
-Folder     = unnamed
-Student ID = A0123456R
+name     = password1
+folder   = unnamed
+url      = gg.com
+username = username1
+password = *******
 _____________________________________________________
 _____________________________________________________
 _____________________________________________________
 List of secrets:
-1. Type of Secret: NUSNet ID
-Name: nusnet1
+1. Type of Secret: Basic Password
+Name: password1
 Folder: unnamed
-NUSNet ID: e0123456
-Password: qwertyui
-
-2. Type of Secret: Student ID
-Name: student2
-Folder: unnamed
-Student ID: A0123456R
+Username: username1
+URL: gg.com
+Password: password1
 
 _____________________________________________________
 _____________________________________________________
