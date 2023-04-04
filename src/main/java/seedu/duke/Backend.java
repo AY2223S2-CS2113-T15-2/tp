@@ -1,31 +1,55 @@
 package seedu.duke;
 
+import java.io.IOException;
+import java.io.File;
+import java.io.FileWriter;
+import java.nio.file.Paths;
+import java.util.Hashtable;
+import java.util.ArrayList;
+import java.util.logging.Logger;
+import java.util.logging.Level;
+
+import seedu.duke.ui.Ui;
+import seedu.duke.exceptions.secrets.InvalidExpiryDateException;
 import seedu.duke.exceptions.secrets.InvalidURLException;
 import seedu.duke.secrets.BasicPassword;
+import seedu.duke.secrets.CreditCard;
+import seedu.duke.secrets.CryptoWallet;
 import seedu.duke.secrets.NUSNet;
 import seedu.duke.secrets.StudentID;
+import seedu.duke.secrets.WifiPassword;
 import seedu.duke.storage.SecretEnumerator;
 import seedu.duke.storage.SecretMaster;
 import seedu.duke.secrets.Secret;
 import seedu.duke.storage.SecretSearcher;
 
 import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileWriter;
 import java.io.FileReader;
-import java.io.IOException;
-import java.util.Hashtable;
-import java.util.ArrayList;
 
 /**
  * Class which represents the backend of the SecureNUS application.
  * Handles file input/output and secret creation and manipulation.
  */
 public class Backend {
-    public static final String ENCRYPTION_IDENTIFIER = "DKENC";
+    private static final Logger LOGGER = DukeLogger.LOGGER;
+    private static final String BACKEND_LOG_INITIALISATION_IDENTIFIER
+        = "Backend - Initialisation : ";
+    private static final String BACKEND_LOG_UPDATESTORAGE_IDENTIFIER
+            = "Backend - updateStorage : ";
+    private static final int DECRYPTION_STARTING_INDEX = 5;
     private static final String DATABASE_FOLDER = "assets";
     private static final String DATABASE_FILE = "database.txt";
     private static final String DATABASE_FILEPATH = "./assets/database.txt";
+    private static final String DELIMITER = ",";
+    private static final String ENCRYPTION_IDENTIFIER = "DKENC";
+    private static final String EMPTY_FIELD_IDENTIFIER = "empty";
+    private static final String USER_DIRECTORY_IDENTIFIER = "user.dir";
+    private static final String PASSWORD_IDENTIFIER = "Password";
+    private static final String CREDIT_CARD_IDENTIFIER = "CreditCard";
+    private static final String CRYPTOWALLET_IDENTIFIER = "CryptoWallet";
+    private static final String NUSNETID_IDENTIFIER = "nusNetID";
+    private static final String STUDENTID_IDENTIFIER = "studentID";
+    private static final String WIFI_PASSWORD_IDENTIFIER = "wifiPassword";
 
     /**
      * Returns data from previous session as a SecretMaster Object.
@@ -37,21 +61,21 @@ public class Backend {
         ArrayList<Secret> secretList = new ArrayList<Secret>();
 
         //create folder if it does not exist
-        String pathOfCurrentDirectory = System.getProperty("user.dir");
-        String assetsPath = java.nio.file.Paths.get(pathOfCurrentDirectory, "assets").toString();
+        String pathOfCurrentDirectory = System.getProperty(Backend.USER_DIRECTORY_IDENTIFIER);
+        String assetsPath = Paths.get(pathOfCurrentDirectory, Backend.DATABASE_FOLDER).toString();
         File assets = new File(assetsPath);
         if (!assets.exists()) {
             assets.mkdir();
         }
         //create file if it does not exist
-        String databasePath = java.nio.file.Paths.get(assetsPath, DATABASE_FILE).toString();
+        String databasePath = Paths.get(assetsPath, Backend.DATABASE_FILE).toString();
         File database = new File(databasePath);
         try {
             if (!database.createNewFile()) {
                 database.createNewFile();
             }
         } catch (IOException e) {
-            System.out.println(e);
+            LOGGER.log(Level.SEVERE, BACKEND_LOG_INITIALISATION_IDENTIFIER, e);
         }
 
         try {
@@ -64,12 +88,14 @@ public class Backend {
             }
             reader.close();
         } catch (IOException e) {
-            System.out.println(e);
+            LOGGER.log(Level.SEVERE, BACKEND_LOG_INITIALISATION_IDENTIFIER, e);
         } catch (InvalidURLException e) {
             throw new RuntimeException(e);
         } catch (NullPointerException e) {
             // to change with UI
-            Ui.print("No Save File Detected");
+            Ui.inform("No Save File Detected");
+        } catch (InvalidExpiryDateException e) {
+            throw new RuntimeException(e);
         }
 
         //for secretEnumerator
@@ -94,19 +120,33 @@ public class Backend {
      * @return ArrayList of Secret
      */
     public static ArrayList<Secret> readAndUpdate(String[] input, ArrayList<Secret> database)
-            throws InvalidURLException {
+            throws InvalidURLException, InvalidExpiryDateException {
         //create different password based on constructor
         //studentID
-        if (input[0].equals("studentID")) {
-            Secret secret = new StudentID(input[2], input[3], input[4]);
+        if (input[0].equals(Backend.PASSWORD_IDENTIFIER)) {
+            Secret secret = new BasicPassword(input[2], input[3], Backend.decode(input[4]),
+                    Backend.decode(input[5]), Backend.parseEmptyField(input[6]));
             database.add(secret);
-        } else if (input[0].equals("nusNetID")) {
+        } else if (input[0].equals(Backend.CREDIT_CARD_IDENTIFIER)) {
+            Secret secret = new CreditCard(input[2], input[3], input[4],
+                    Backend.decode(input[5]), Backend.decode(input[6]),
+                        input[7]);
+            database.add(secret);
+        } else if (input[0].equals(Backend.CRYPTOWALLET_IDENTIFIER)) {
+            Secret secret = new CryptoWallet(input[2], input[3], Backend.decode(input[4]),
+                    Backend.decode(input[5]), Backend.decode(input[6]),
+                        Backend.createUrlArrayList(input));
+            database.add(secret);
+        } else if (input[0].equals(Backend.NUSNETID_IDENTIFIER)) {
             Secret secret = new NUSNet(input[2], input[3], input[4],
                     Backend.decode(input[5]));
             database.add(secret);
-        } else if (input[0].equals("Password")) {
-            Secret secret = new BasicPassword(input[2], input[3], Backend.decode(input[4]),
-                    Backend.decode(input[5]), Backend.parseEmptyField(input[6]));
+        } else if (input[0].equals(Backend.STUDENTID_IDENTIFIER)) {
+            Secret secret = new StudentID(input[2], input[3], input[4]);
+            database.add(secret);
+        } else if (input[0].equals(Backend.WIFI_PASSWORD_IDENTIFIER)) {
+            Secret secret = new WifiPassword(input[2], input[3], Backend.decode(input[4]),
+                    Backend.decode(input[5]));
             database.add(secret);
         }
         //Password
@@ -164,6 +204,14 @@ public class Backend {
         return hashtableFolders;
     }
 
+    public static ArrayList<String> createUrlArrayList(String[] input) {
+        ArrayList<String> urlArrayList = new ArrayList<String>();
+        for (int i = 7; i < input.length; i++) {
+            urlArrayList.add(input[i]);
+        }
+        return urlArrayList;
+    }
+
     /**
      * Encodes a given field using a custom encryption method.
      *
@@ -186,7 +234,7 @@ public class Backend {
      * @return the decoded field.
      */
     public static String decode(String field) {
-        String modifiedField = field.substring(5);
+        String modifiedField = field.substring(Backend.DECRYPTION_STARTING_INDEX);
         String actualField = "";
         for (int i = 0; i < modifiedField.length(); i++) {
             int asciiValue = (int) (modifiedField.charAt(i) - 1);
@@ -202,7 +250,7 @@ public class Backend {
      * @return an empty string if field is "empty", else returns the field.
      */
     public static String parseEmptyField(String field) {
-        return field.equals("empty") ? "" : field;
+        return field.equals(Backend.EMPTY_FIELD_IDENTIFIER) ? "" : field;
     }
 
     /**
@@ -212,9 +260,9 @@ public class Backend {
      * @param input the list of secrets provided by user.
      */
     public static void updateStorage(ArrayList<Secret> input) {
-        String currDir = System.getProperty("user.dir");
-        String databasePath = java.nio.file.Paths.get(currDir,
-                "assets", "database.txt").toString();
+        String currDir = System.getProperty(Backend.USER_DIRECTORY_IDENTIFIER);
+        String databasePath = Paths.get(currDir,
+                Backend.DATABASE_FOLDER, Backend.DATABASE_FILE).toString();
         File database = new File(databasePath);
 
         try {
@@ -225,7 +273,7 @@ public class Backend {
             }
             myWriter.close();
         } catch (IOException e) {
-            System.out.println(e);
+            LOGGER.log(Level.SEVERE, BACKEND_LOG_UPDATESTORAGE_IDENTIFIER, e);
         }
     }
 }

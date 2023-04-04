@@ -1,20 +1,23 @@
 package seedu.duke.command;
 
-import seedu.duke.Ui;
+import seedu.duke.exceptions.ExceptionMain;
+import seedu.duke.exceptions.OperationCancelException;
 import seedu.duke.exceptions.secrets.FolderExistsException;
 import seedu.duke.exceptions.RepeatedIdException;
 import seedu.duke.exceptions.secrets.IllegalFolderNameException;
 import seedu.duke.exceptions.secrets.IllegalSecretNameException;
+import seedu.duke.messages.InquiryMessages;
 import seedu.duke.secrets.NUSNet;
 import seedu.duke.storage.SecretMaster;
+
+import java.util.HashSet;
 
 /**
  * Represents a Class to giva a command to add a NUSNet account.
  * Extends the Command class.
  */
-public class AddNUSNetCommand extends Command{
-    private String name;
-    private String folderName;
+public class AddNUSNetCommand extends AddSecretCommand {
+    public static final String KEYWORD = "o/NUSNet";
     private String nusNetId;
     private String password;
 
@@ -23,18 +26,15 @@ public class AddNUSNetCommand extends Command{
      *
      * @param input The input string containing the details of the account to add.
      */
-    public AddNUSNetCommand(String input) {
-        this.name = extractName(input);
-        this.folderName = extractFolderName(input);
-        this.nusNetId = inquirenusNetId();
-        if (this.name == null) {
-            this.name = nusNetId;
-        }
-        this.password = inquirePassword();
+    public AddNUSNetCommand(String input, HashSet<String> usedNames) throws IllegalFolderNameException,
+            IllegalSecretNameException, RepeatedIdException, OperationCancelException {
+
+        super(input, usedNames, KEYWORD);
+        this.nusNetId = inquireNusNetId();
+        this.password = inquire(InquiryMessages.PASSWORD, "Password");;
     }
     public AddNUSNetCommand(NUSNet nusNet) {
-        this.name = nusNet.getName();
-        this.folderName = nusNet.getFolderName();
+        super(nusNet);
         this.nusNetId = nusNet.getnusNetId();
         this.password = nusNet.getPassword();
     }
@@ -49,57 +49,21 @@ public class AddNUSNetCommand extends Command{
      *                          or IllegalFolderNameException.
      */
     @Override
-    public void execute(SecretMaster secureNUSData) {
+    public void execute(SecretMaster secureNUSData) throws ExceptionMain {
         NUSNet nusNetIdData = new NUSNet(name,folderName,nusNetId,password);
         try {
             secureNUSData.addSecret(nusNetIdData);
         } catch (RepeatedIdException e) {
-            throw new RuntimeException(e);
+            throw new ExceptionMain(e.getMessage());
         } catch (FolderExistsException | IllegalSecretNameException | IllegalFolderNameException e) {
-            throw new RuntimeException(e);
+            throw new ExceptionMain(e.getMessage());
         }
-        String starsPassword = "********";
         System.out.println("I have added a new NUS Net ID password:\n");
         System.out.println(
                 "name       = " + name + "\n" +
                 "folder     = " + folderName + "\n" +
                 "NUS Net ID = " + nusNetId + "\n" +
-                "password   = " + starsPassword);
-    }
-
-    /**
-     * Extracts the name of the account from the input string.
-     *
-     * @param input The input string containing the details of the account to add.
-     * @return The name of the account.
-     */
-    public String extractName(String input) {
-        String[] extractedNames = input.split("o/NUSNet ");
-        String extractedName;
-        if (extractedNames.length == 2) {
-            if (extractedNames[1].split(" /f").length > 1) {
-                extractedName = extractedNames[1].split(" /f")[0];
-            } else {
-                extractedName = null;
-            }
-        } else {
-            extractedName = null; //Default Name
-        }
-        return extractedName;
-    }
-
-    /**
-     * Extracts the folder name from the user's input.
-     *
-     * @param input the user's input string
-     * @return the folder name string, or "unnamed" if not found
-     */
-    public String extractFolderName(String input) {
-        String extractedFolderName = "unnamed";
-        if (input.split("/f ").length > 1) {
-            extractedFolderName = input.split("/f ")[1];
-        }
-        return extractedFolderName;
+                "password   = " + HIDDEN_FIELD);
     }
 
     /**
@@ -107,21 +71,12 @@ public class AddNUSNetCommand extends Command{
      *
      * @return the user's NUS Net ID string input
      */
-    public String inquirenusNetId() {
-        System.out.println("Please enter your NUS Net ID: ");
-        String nusNetId = Ui.readCommand();
+    public String inquireNusNetId() throws OperationCancelException {
+        nusNetId = inquire(InquiryMessages.NUSNET_ID, "NUSNet ID");
+        while (!NUSNet.isLegalId(nusNetId)) {
+            nusNetId = inquire(InquiryMessages.NUSNET_ID_RETRY, "NUSNet ID");
+        }
         return nusNetId;
-    }
-
-    /**
-     * Prompts the user to enter their NUS Net ID.
-     *
-     * @return the user's NUS Net ID string input
-     */
-    public String inquirePassword() {
-        System.out.println("Please enter your NUS Net password: ");
-        String password = Ui.readCommand();
-        return password;
     }
 
     /**

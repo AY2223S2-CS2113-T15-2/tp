@@ -13,5 +13,6 @@ frame "UI" {
 }
 Commands -[dotted]right-> SecureNUS :executes in
 SecureNUS -[dotted]up-> SecretStorage :makes changes in
-Ui <-down- User
+SecureNUS -[dotted]up-> Ui :responds to user after processing
+Ui <-up- User
 @enduml

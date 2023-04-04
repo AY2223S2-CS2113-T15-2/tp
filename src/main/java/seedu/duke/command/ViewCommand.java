@@ -28,7 +28,7 @@ public class ViewCommand extends Command {
      * @return the password name
      */
     public String extractName(String input) {
-        return input.split("view")[1].trim();
+        return input.substring(input.indexOf("p/") + 2).trim();
     }
 
     /**
@@ -51,10 +51,11 @@ public class ViewCommand extends Command {
         Secret passwordSecret;
         try {
             passwordSecret = secureNUSData.getByName(this.passwordName);
+            System.out.println(passwordSecret.getRevealStr());
         } catch (SecretNotFoundException e) {
-            throw new RuntimeException(e);
+            System.out.println("There are no passwords that matches that name!\n" +
+                    "Make sure you follow this format: \"view p/PASSWORD_NAME\"");
         }
-        // TODO: How to show password?
     }
 
     /**

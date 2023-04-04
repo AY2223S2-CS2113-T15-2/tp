@@ -122,7 +122,7 @@ public class SecretSearcher {
      *
      * @return a HashSet of strings containing all the secret names in the storage
      */
-    public HashSet getNames() {
+    public HashSet<String> getNames() {
         HashSet<String> nameHashset = new HashSet();
         for (String name : this.storage.keySet()) {
             nameHashset.add(name);

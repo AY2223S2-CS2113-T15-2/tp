@@ -1,5 +1,7 @@
 package seedu.duke.secrets;
 
+import seedu.duke.Backend;
+
 import java.util.ArrayList;
 
 /**
@@ -28,7 +30,7 @@ public class CryptoWallet extends Secret {
     public CryptoWallet(String name, String username,
                         String privateKey, String seedPhrase) {
         super(name);
-        urls = new ArrayList<String>();
+        this.urls = new ArrayList<String>();
         this.username = username;
         this.seedPhrase = seedPhrase;
         this.privateKey = privateKey;
@@ -46,7 +48,15 @@ public class CryptoWallet extends Secret {
     public CryptoWallet(String name, String folderName, String username,
                         String privateKey, String seedPhrase) {
         super(name, folderName);
-        urls = new ArrayList<String>();
+        this.urls = new ArrayList<String>();
+        this.username = username;
+        this.seedPhrase = seedPhrase;
+        this.privateKey = privateKey;
+    }
+    public CryptoWallet(String name, String folderName, String username,
+                        String privateKey, String seedPhrase, ArrayList<String> urls) {
+        super(name, folderName);
+        this.urls = urls;
         this.username = username;
         this.seedPhrase = seedPhrase;
         this.privateKey = privateKey;
@@ -133,5 +143,17 @@ public class CryptoWallet extends Secret {
     @Override
     public String getRevealStr() {
         return String.format("Seed Phrase: %s", seedPhrase);
+    }
+
+    @Override
+    public String toStringForDatabase() {
+        String formattedString =  "CryptoWallet," + super.toStringForDatabase() +
+                "," + Backend.encode(this.username) + "," + Backend.encode(this.privateKey) + "," +
+                Backend.encode("" + this.seedPhrase) + ",";
+        String formattedURLs = "";
+        for (String url : this.urls) {
+            formattedURLs += url + ",";
+        }
+        return formattedString + formattedURLs;
     }
 }

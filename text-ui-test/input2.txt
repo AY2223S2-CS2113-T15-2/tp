@@ -1,0 +1,7 @@
+new o/NUSNet nusnet1
+e0123456
+qwertyui
+new o/StudentID student2
+A0123456R
+list
+exit

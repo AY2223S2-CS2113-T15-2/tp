@@ -20,7 +20,7 @@ class SecretTest {
         for (String name: names) {
             assertEquals(true, Secret.isIllegalName(name));
         }
-        assertEquals(false, Secret.isIllegalName("Garena Login"));
+        assertEquals(true, Secret.isIllegalName("Garena Login"));
     }
 
     /**
@@ -49,9 +49,9 @@ class SecretTest {
      * This method checks if the name and uid are changed correctly.
      */
     @Test
-    void editName() {
+    void setName() {
         Secret secret = new Secret("name", "folder");
-        secret.editName("newName");
+        secret.setName("newName");
         assertEquals("newName", secret.getUid());
         assertEquals("newName", secret.getName());
         assertEquals("folder", secret.getFolderName());

@@ -1,5 +1,7 @@
 package seedu.duke.command;
 
+import seedu.duke.ui.Ui;
+import seedu.duke.exceptions.secrets.FolderExistsException;
 import seedu.duke.exceptions.secrets.SecretNotFoundException;
 import seedu.duke.secrets.Secret;
 import seedu.duke.storage.SecretMaster;
@@ -46,22 +48,26 @@ public class EditCommand extends Command {
         String[] extractedFields = new String[4];
 
         // Define regular expression patterns
-        Pattern passwordPattern = Pattern.compile("p/([\\w\\s]+)");
-        Pattern folderPattern = Pattern.compile("-f nf/([\\w\\s]+)");
-        Pattern descriptionPattern = Pattern.compile("-d nd/([\\w\\s]+)");
-        Pattern newPasswordPattern = Pattern.compile("-N np/([\\w\\s]+)");
+        Pattern namePattern = Pattern.compile("p/([\\w\\s]+)");
+        Pattern newFolderPattern = Pattern.compile("-f nf/([\\w\\s]+)");
+        Pattern newDescriptionPattern = Pattern.compile("-d nd/([\\w\\s]+)");
+        Pattern newNamePattern = Pattern.compile("-N np/([\\w\\s]+)");
 
         // Extract values using regular expressions
-        Matcher passwordMatcher = passwordPattern.matcher(input);
-        Matcher folderMatcher = folderPattern.matcher(input);
-        Matcher descriptionMatcher = descriptionPattern.matcher(input);
-        Matcher newPasswordMatcher = newPasswordPattern.matcher(input);
+        Matcher nameMatcher = namePattern.matcher(input);
+        Matcher newFolderMatcher = newFolderPattern.matcher(input);
+        Matcher newDescriptionMatcher = newDescriptionPattern.matcher(input);
+        Matcher newNameMatcher = newNamePattern.matcher(input);
 
         // Check if there is a match and extract the value
-        extractedFields[0] = passwordMatcher.find() ? passwordMatcher.group(1).trim() : null;
-        extractedFields[1] = folderMatcher.find() ? folderMatcher.group(1).trim() : null;
-        extractedFields[2] = descriptionMatcher.find() ? descriptionMatcher.group(1).trim() : null;
-        extractedFields[3] = newPasswordMatcher.find() ? newPasswordMatcher.group(1).trim() : null;
+        extractedFields[0] = nameMatcher.find() ? nameMatcher.group(1).trim() : null;
+        extractedFields[1] = newFolderMatcher.find() ? newFolderMatcher.group(1).trim() : "unnamed";
+        extractedFields[2] = newDescriptionMatcher.find() ? newDescriptionMatcher.group(1).trim() : "";
+        extractedFields[3] = newNameMatcher.find() ? newNameMatcher.group(1).trim() : "";
+
+        if (extractedFields[0] == null) {
+            Ui.printError("(Invalid input)");
+        }
 
         return extractedFields;
     }
@@ -75,13 +81,13 @@ public class EditCommand extends Command {
     public void execute(SecretMaster secureNUSData) {
         Secret passwordSecret;
         try {
-            passwordSecret = secureNUSData.getByName(this.name);
+            passwordSecret = secureNUSData.getByName(name);
+            secureNUSData.editSecret(passwordSecret, newName, newFolderName);
         } catch (SecretNotFoundException e) {
-            throw new RuntimeException(e);
+            Ui.printError("(The password is not found).");
+        } catch (FolderExistsException e) {
+            Ui.printError("(The folder being created already exists).");
         }
-        passwordSecret.editName(newName);
-        // TODO: editFolderName()
-        // TODO: editDescription()
     }
 
     /**

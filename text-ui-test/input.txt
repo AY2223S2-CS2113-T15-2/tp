@@ -3,4 +3,4 @@ gg.com
 username1
 password1
 list
-bye
+exit

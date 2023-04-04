@@ -74,12 +74,11 @@ public class SearchCommand extends Command{
         for (Secret secret : secrets) {
             if (secret.getName().contains(this.name)) { // case-sensitive search
                 ++count;
-                output.append("ID:").append("\t|\t").append(count)
-                        .append("\t|\t").append(secret.getName()).append("\t");
+                output.append("ID: ").append(count).append("\t|\t").append(secret.getName()).append("\t|\n");
             }
         }
         System.out.println("Found " + count + " matches!");
-        System.out.println(output.toString());
+        System.out.print(output.toString());
     }
 
     /**

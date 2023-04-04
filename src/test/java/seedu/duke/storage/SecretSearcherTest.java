@@ -22,7 +22,7 @@ class SecretSearcherTest {
         SecretSearcher secretSearcher = new SecretSearcher();
         secretSearcher.add(new BasicPassword("basic1", "username1", "Password1",
                 "http.com"));
-        secretSearcher.add(new CreditCard("credit1", "HJ HJ UI", "1234567890123456", 123,
+        secretSearcher.add(new CreditCard("credit1", "HJ HJ UI", "1234567890123456", "123",
                 "12/23"));
         secretSearcher.add(new CryptoWallet("crypto1", "hjhbj", "fdertyuiytyui876ytfgyuit5rt",
                 "hb jnjkm kjijh ijhui hjhb iujh uhbgv gfcd"));

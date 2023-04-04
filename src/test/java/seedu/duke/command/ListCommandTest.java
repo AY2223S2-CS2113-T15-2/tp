@@ -3,7 +3,6 @@ package seedu.duke.command;
 import seedu.duke.exceptions.secrets.FolderExistsException;
 import seedu.duke.exceptions.secrets.IllegalFolderNameException;
 import seedu.duke.exceptions.secrets.IllegalSecretNameException;
-import seedu.duke.exceptions.secrets.InvalidURLException;
 import seedu.duke.exceptions.secrets.InvalidCreditCardNumberException;
 import seedu.duke.exceptions.secrets.InvalidExpiryDateException;
 import seedu.duke.exceptions.RepeatedIdException;
@@ -74,7 +73,7 @@ public class ListCommandTest {
             secretMaster.addSecret(new BasicPassword("BasicPassword1", "Username1",
                     "Password1", "Url1.com"));
             secretMaster.addSecret(new CreditCard("CreditCard1", "John Doe",
-                    "1234567812345678", 123, "12/25"));
+                    "1234567812345678", "123", "12/25"));
             secretMaster.addSecret(new CryptoWallet("CryptoWallet1", "Folder1",
                     "DeepsD", "PrivateKey1", "SeedPhrase1"));
             secretMaster.addSecret(new NUSNet("NUSNet1", "NUSNetId1",
@@ -87,8 +86,8 @@ public class ListCommandTest {
             ListCommand listCommand = new ListCommand("list");
             listCommand.execute(secretMaster);
 
-        } catch (FolderExistsException | IllegalFolderNameException | IllegalSecretNameException | RepeatedIdException
-                | InvalidURLException | InvalidCreditCardNumberException | InvalidExpiryDateException e) {
+        } catch (FolderExistsException | IllegalFolderNameException | IllegalSecretNameException | RepeatedIdException |
+                 InvalidCreditCardNumberException | InvalidExpiryDateException e) {
             e.printStackTrace();
         }
     }

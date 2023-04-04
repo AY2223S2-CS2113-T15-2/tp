@@ -61,7 +61,7 @@ public class ListCommand extends Command {
                             "Folder: " + basicPassword.getFolderName() + "\n" +
                             "Username: " + basicPassword.getUsername() + "\n" +
                             "URL: " + basicPassword.getUrl() + "\n" +
-                            "Password: " + basicPassword.getPassword();
+                            "Password: " + basicPassword.getPassword() + "\n";
 
         } else if (secret instanceof CreditCard) {
             CreditCard creditCard = (CreditCard) secret;
@@ -71,7 +71,7 @@ public class ListCommand extends Command {
                     "Full Name: " + creditCard.getFullName() + "\n" +
                     "Credit Card Number: " + creditCard.getCreditCardNumber() + "\n" +
                     "CVC Number: " + creditCard.getCvcNumber() + "\n" +
-                    "Expiry Date: " + creditCard.getExpiryDate();
+                    "Expiry Date: " + creditCard.getExpiryDate()+ "\n";
 
         } else if (secret instanceof CryptoWallet) {
             CryptoWallet cryptoWallet = (CryptoWallet) secret;
@@ -80,7 +80,7 @@ public class ListCommand extends Command {
                     "Folder: " + cryptoWallet.getFolderName() + "\n" +
                     "Username: " + cryptoWallet.getUsername() + "\n" +
                     "Private Key: " + cryptoWallet.getPrivateKey() + "\n" +
-                    "Seed Phrase: " + cryptoWallet.getSeedPhrase();
+                    "Seed Phrase: " + cryptoWallet.getSeedPhrase()+ "\n";
 
         } else if (secret instanceof NUSNet) {
             NUSNet nusNet = (NUSNet) secret;
@@ -88,14 +88,15 @@ public class ListCommand extends Command {
                     "Name: " + nusNet.getName() + "\n" +
                     "Folder: " + nusNet.getFolderName() + "\n" +
                     "NUSNet ID: " + nusNet.getnusNetId() + "\n" +
-                    "Password: " + nusNet.getPassword();
+                    "Password: " + nusNet.getPassword() + "\n";
+
 
         } else if (secret instanceof StudentID) {
             StudentID studentID = (StudentID) secret;
             return "Type of Secret: Student ID" + "\n" +
                     "Name: " + studentID.getName() + "\n" +
                     "Folder: " + studentID.getFolderName() + "\n" +
-                    "Student ID: " + studentID.getStudentID();
+                    "Student ID: " + studentID.getStudentID()+ "\n";
 
         } else if (secret instanceof WifiPassword) {
             WifiPassword wifiPassword = (WifiPassword) secret;
@@ -103,7 +104,7 @@ public class ListCommand extends Command {
                     "Name: " + wifiPassword.getName() + "\n" +
                     "Folder: " + wifiPassword.getFolderName() + "\n" +
                     "Username: " + wifiPassword.getUsername() + "\n" +
-                    "Password: " + wifiPassword.getPassword();
+                    "Password: " + wifiPassword.getPassword()+ "\n";
 
         } else {
             return "Secret";
