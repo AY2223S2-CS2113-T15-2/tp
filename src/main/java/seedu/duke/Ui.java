@@ -1,6 +1,4 @@
-package seedu.duke.ui;
-
-import seedu.duke.messages.OperationMessages;
+package seedu.duke;
 
 import java.util.Scanner;
 
@@ -8,15 +6,17 @@ import java.util.Scanner;
  * Ui class to handle all user interface printing.
  */
 public class Ui {
-    public static final String DUPLICATE_WHITESPACE_FMT = "\\s+";
-
-    public static Scanner in = new Scanner(System.in);
+    private static Scanner in = new Scanner(System.in);
 
     /**
      * Greets the user upon start up of the application.
      */
     public static void greetUser() {
-        System.out.println(OperationMessages.INITIALISE);
+        System.out.println("Welcome to secureNUS v1.0\n" +
+                "Current Features\n" +
+                "Adding a password      : new [NAME] /f [FOLDER_NAME]\n" +
+                "Adding a NUSNet ID     : new o/NUSNet [NAME] /f [FOLDER_NAME]\n" +
+                "Adding a Student ID    : new o/StudentID [NAME] /f [FOLDER_NAME] \n");
     }
 
     /**
@@ -26,7 +26,7 @@ public class Ui {
         System.out.print("_____________________________________________________\n");
     }
 
-    public static void inform(String message) {
+    public static void print(String message) {
         printLine();
         System.out.println(message);
         printLine();
@@ -39,24 +39,16 @@ public class Ui {
      */
     public static String readCommand() {
         while (in.hasNextLine()) {
-            String line = in.nextLine();
-            return removeExtraWhiteSpaces(line);
+            return in.nextLine();
         }
         return "";
     }
 
     public static String readLine() {
-        while (in.hasNextLine()) {
-            String line = in.nextLine();
-            return line;
+        if (in.hasNextLine()) {
+            return in.nextLine();
         }
         return "";
-    }
-
-    public static String removeExtraWhiteSpaces(String line) {
-        // remove duplicate whitespaces
-        line = line.replaceAll(DUPLICATE_WHITESPACE_FMT, " ");
-        return line.trim(); // remove leading and trailing whitespaces
     }
 
     // TODO can this be removed with logging?
@@ -67,9 +59,6 @@ public class Ui {
      */
     public static void printError(String message) {
         System.out.println("Oops! Error encountered "+ message);
-    }
-    public static void informOperationCancel () {
-        System.out.println(OperationMessages.CANCEL_OPERATION);
     }
 
     public static void close() {

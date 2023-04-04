@@ -2,11 +2,7 @@
 !include Style.puml
 
 package Application {
-    rectangle Commands
-    class Parser {
-    }
-    class UI {
-    }
+
     Commands <- Parser
     Parser <- UI
     Commands --> SecureNUS
@@ -15,8 +11,6 @@ package Application {
     SecretMaster --> SecretEnumerator
     SecretMaster <-> Backend
 }
-actor InputCLI.User
-file OutputFile.database
 InputCLI.User -> UI
 Backend <-> OutputFile.database
 

@@ -12,7 +12,7 @@ public class MenuCommand extends Command {
      */
     public void displayMenu() {
         System.out.println("SecureNUS Command Menu:\n" +
-                "1. Add a general password: new [PASSWORD_NAME] /f [FOLDER_NAME]\n" +
+                "1. Add a general password: new [NAME] /f [FOLDER_NAME]\n" +
                 "2. Add password for websites needing Credit Card details: " +
                 "new o/CreditCard [NAME] /f [FOLDER_NAME]\n" +
                 "3. Add password for websites needing Crypto Wallet details: " +
@@ -29,8 +29,8 @@ public class MenuCommand extends Command {
                 "10. Search for password: search n/NAME_LIKE [-f f/FOLDER_LIKE]\n" +
                 "11. Save the password in .txt file: save\n" +
                 "12. Load the password from the .txt file: load [-a, –append] [f/FILE_PATH]\n" +
-                "(BUGGY, NOT COMPLETED) 13. Edit the passwords: edit p/PASSWORD_NAME [-f nf/NEW_FOLDER_NAME]\n " +
-                "[-d nd/NEW_DESCRIPTION] [-N np/NEW_PASSWORD_NAME]\n" +
+                "13. Edit the passwords: edit p/PASSWORD_NAME [-f nf/NEW_FOLDER_NAME] [-d nd/NEW_DESCRIPTION]" +
+                " [-N np/NEW_PASSWORD_NAME\n" +
                 "14. Menu list to refer for commands: menu\n" +
                 "15. Exit from the password manager: exit\n"
         );

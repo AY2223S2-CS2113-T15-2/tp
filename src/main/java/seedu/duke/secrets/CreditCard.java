@@ -1,6 +1,5 @@
 package seedu.duke.secrets;
 
-import seedu.duke.Backend;
 import seedu.duke.exceptions.secrets.InvalidCreditCardNumberException;
 import seedu.duke.exceptions.secrets.InvalidExpiryDateException;
 
@@ -11,14 +10,12 @@ import seedu.duke.exceptions.secrets.InvalidExpiryDateException;
  * "MM/YY".
  */
 public class CreditCard extends Secret {
-    private static final String EXPIRY_DATE_FMT = "[0-1][0-9]/[0-3][0-9]";
-    private static final String CREDIT_CARD_NUMBER_FMT = "\\d{16}";
-
-    private static final String CVC_NUMBER_FMT = "\\d{3}";
     private String fullName;
     private String creditCardNumber;
-    private String cvcNumber;
+    private int cvcNumber;
     private String expiryDate;
+    private final String expiryDateFmt = "[0-1][0-9]/[0-3][0-9]";
+    private final String creditCardNumberFmt = "\\d{16}";
 
     /**
      * Constructor for a CreditCard object.
@@ -33,18 +30,18 @@ public class CreditCard extends Secret {
      */
     public CreditCard(String name, String fullName,
                       String creditCardNumber,
-                      String cvcNumber, String expiryDate) throws
+                      int cvcNumber, String expiryDate) throws
             InvalidExpiryDateException, InvalidCreditCardNumberException {
 
 
         super(name);
         this.fullName = fullName;
         this.creditCardNumber = creditCardNumber;
-        if (!creditCardNumber.matches(CREDIT_CARD_NUMBER_FMT)) {
+        if (!creditCardNumber.matches(creditCardNumberFmt)) {
             throw new InvalidCreditCardNumberException();
         }
         this.cvcNumber = cvcNumber;
-        if (!expiryDate.matches(EXPIRY_DATE_FMT)) {
+        if (!expiryDate.matches(expiryDateFmt)) {
             throw new InvalidExpiryDateException();
         }
         this.expiryDate = expiryDate;
@@ -64,28 +61,17 @@ public class CreditCard extends Secret {
      */
     public CreditCard(String name, String folderName,
                       String fullName, String creditCardNumber,
-                      String cvcNumber, String expiryDate) throws InvalidExpiryDateException {
+                      int cvcNumber, String expiryDate) throws InvalidExpiryDateException {
         super(name, folderName);
         this.fullName = fullName;
         this.creditCardNumber = creditCardNumber;
         this.cvcNumber = cvcNumber;
-        if (!isLegalExpiryDate(expiryDate)) {
+        if (!expiryDate.matches(expiryDateFmt)) {
             throw new InvalidExpiryDateException();
         }
         this.expiryDate = expiryDate;
     }
 
-    public static boolean isLegalExpiryDate(String expiryDate) {
-        return expiryDate.matches(EXPIRY_DATE_FMT);
-    }
-
-    public static boolean isLegalCreditCardNumber(String creditCardNumber) {
-        return creditCardNumber.matches(CREDIT_CARD_NUMBER_FMT);
-    }
-
-    public static boolean isLegalCvcNumber(String number) {
-        return number.matches(CVC_NUMBER_FMT);
-    }
 
     /**
      * Returns the expiry date of the credit card.
@@ -146,7 +132,7 @@ public class CreditCard extends Secret {
      *
      * @return the CVC number
      */
-    public String getCvcNumber() {
+    public int getCvcNumber() {
         return cvcNumber;
     }
 
@@ -155,7 +141,7 @@ public class CreditCard extends Secret {
      *
      * @param cvcNumber the new CVC number
      */
-    public void setCvcNumber(String cvcNumber) {
+    public void setCvcNumber(int cvcNumber) {
         this.cvcNumber = cvcNumber;
     }
 
@@ -168,16 +154,8 @@ public class CreditCard extends Secret {
     @Override
     public String getRevealStr() {
         return String.format("Credit Card Number: %s\n" +
-                "CVC Number: %s\n" +
+                "CVC Number: %d\n" +
                 "Expiry Date: %s", creditCardNumber, cvcNumber,
                 expiryDate);
-    }
-
-    @Override
-    public String toStringForDatabase() {
-        String formattedString =  "CreditCard," + super.toStringForDatabase() +
-                "," + this.fullName + "," + Backend.encode(this.creditCardNumber) + "," +
-                Backend.encode("" + this.cvcNumber) + "," + this.expiryDate;
-        return formattedString;
     }
 }

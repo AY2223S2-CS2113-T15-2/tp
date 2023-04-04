@@ -15,9 +15,9 @@ import java.util.HashSet;
  * Master class that manages the storage and retrieval of secrets and folders.
  */
 public class SecretMaster {
-    public static final String ALLOWED_NAMES_REGEX = "^[a-zA-Z0-9_]*$"; // only alphanumeric allowed
     // use for quick finding
-    public static final String DEFAULT_FOLDER = "unnamed";
+    private static final String DEFAULT_FOLDER = "unnamed";
+    private static final String ALLOWED_NAMES_REGEX = "^[a-zA-Z0-9_]*$"; // only alphanumeric allowed
 
     /**
      * Object that manages searching for secrets.
@@ -68,7 +68,7 @@ public class SecretMaster {
      * @param name String name to check.
      * @return boolean indicating whether the name is legal.
      */
-    public static boolean isLegalFolderName(String name) {
+    public boolean isLegalName(String name) {
         return name.matches(ALLOWED_NAMES_REGEX);
     }
 
@@ -117,7 +117,7 @@ public class SecretMaster {
      */
     public void createFolder(String folderName) throws FolderExistsException, IllegalFolderNameException {
 
-        if (!isLegalFolderName(folderName)) {
+        if (!isLegalName(folderName)) {
             throw new IllegalFolderNameException();
         }
 
@@ -197,7 +197,7 @@ public class SecretMaster {
      */
     public void addSecret(Secret secret) throws FolderExistsException, RepeatedIdException,
             IllegalSecretNameException, IllegalFolderNameException {
-        if (!isLegalFolderName(secret.getName())) {
+        if (!isLegalName(secret.getName())) {
             throw new IllegalSecretNameException();
         }
         if (secretNames.contains(secret.getUid())) {
@@ -215,26 +215,6 @@ public class SecretMaster {
     }
 
     /**
-     * Updates a Secret's name and folder as well as its name in secretNames, and
-     * itself in secretSearcher and secretEnumerator.
-     *
-     * @param secret Secret object to be edited.
-     * @param newName updated name of the Secret object.
-     * @param newFolderName updated folder of the Secret object.
-     * @throws FolderExistsException if the folder specified in the Secret already exists and cannot be created.
-     */
-    public void editSecret(Secret secret, String newName, String newFolderName) throws FolderExistsException {
-        secretNames.remove(secret.getName());
-        secretSearcher.delete(secret);
-        secretEnumerator.delete(secret);
-        secret.setName(newName);
-        secret.setFolderName(newFolderName);
-        secretNames.add(secret.getName());
-        secretSearcher.add(secret);
-        secretEnumerator.add(secret);
-    }
-
-    /**
      * Removes a Secret from the storage system.
      *
      * @param secret Secret object to be removed.
@@ -244,8 +224,40 @@ public class SecretMaster {
         if (!secretNames.contains(secret.getUid())) {
             throw new SecretNotFoundException();
         }
+        String folderName = secret.getFolderName();
         secretNames.remove(secret.getName());
         secretEnumerator.delete(secret);
         secretSearcher.delete(secret);
+    }
+
+    /**
+     * Retrieves an ArrayList of all Secret names.
+     *
+     * @return ArrayList of all Secret names.
+     */
+    public ArrayList<String> listSecretNames() {
+        ArrayList<String> secretNamesList = new ArrayList<String>();
+        for (Secret secret : secretEnumerator.getList()) {
+            secretNamesList.add(secret.getName());
+        }
+        return secretNamesList;
+    }
+
+    /**
+     * Retrieves an ArrayList of all Secret names within the given folder.
+     *
+     * @param folderName String name of the folder to retrieve Secret names from.
+     * @return ArrayList of all Secret names within the given folder.
+     * @throws NonExistentFolderException if the folder does not exist.
+     */
+    public ArrayList <String> listSecretNames(String folderName) throws NonExistentFolderException {
+        if (!folders.contains(folderName)) {
+            throw new NonExistentFolderException();
+        }
+        ArrayList<String> secretNamesList = new ArrayList<String>();
+        for (Secret secret : secretEnumerator.getList(folderName)) {
+            secretNamesList.add(secret.getName());
+        }
+        return secretNamesList;
     }
 }

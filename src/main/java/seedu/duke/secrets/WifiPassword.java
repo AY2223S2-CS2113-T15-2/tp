@@ -1,7 +1,5 @@
 package seedu.duke.secrets;
 
-import seedu.duke.Backend;
-
 /**
  * Class to represent a Wi-Fi password and its associated information.
  */
@@ -90,12 +88,5 @@ public class WifiPassword extends Secret{
     @Override
     public String getRevealStr() {
         return String.format("Password: %s", password);
-    }
-
-    @Override
-    public String toStringForDatabase() {
-        String formattedString =  "wifiPassword," + super.toStringForDatabase() +
-                "," + Backend.encode(this.username) + "," + Backend.encode(this.password);
-        return formattedString;
     }
 }

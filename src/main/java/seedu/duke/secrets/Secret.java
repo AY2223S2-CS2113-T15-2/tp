@@ -11,12 +11,12 @@ public class Secret {
      * A regex pattern for matching illegal characters in password names.
      */
     private static final Pattern ILLEGAL_CHARS_PATTERN =
-            Pattern.compile("^.*[~!@#$%^&*()_+=\\-`{}<>() \\[\\]|\"\\_].*$");
+            Pattern.compile("^.*[~!@#$%^&*()_+=\\-`{}<>()\\[\\]|\"\\_].*$");
 
     /**
      * The folder name of the password. By default, it is set to "unnamed".
      */
-    private String folderName = "unnamed";
+    protected String folderName = "unnamed";
 
     /**
      * The unique identifier of the password.
@@ -72,6 +72,16 @@ public class Secret {
     }
 
     /**
+     * Sets the name of the password.
+     *
+     * @param name The new name of the password.
+     */
+    public void setName(String name) {
+        this.name = name;
+        this.uid = name; // since they are linked now
+    }
+
+    /**
      * Returns the name of the password.
      *
      * @return The name of the password.
@@ -86,7 +96,7 @@ public class Secret {
      *
      * @param newName The new name of the password.
      */
-    public void setName(String newName) {
+    public void editName(String newName) {
         uid = newName;
         name = newName;
     }

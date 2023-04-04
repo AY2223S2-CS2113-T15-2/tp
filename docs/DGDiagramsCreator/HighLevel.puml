@@ -1,25 +1,12 @@
 @startuml
 !include Style.puml
 
-component Application {
-
-    rectangle SecureNUS
-    rectangle UI
-    rectangle Backend
-    rectangle SecretStorage
+package Application {
     SecureNUS <- UI
-    SecureNUS <--> SecretStorage
+    SecureNUS --> SecretStorage
     SecretStorage <-> Backend
-    SecureNUS -> Backend
 }
-actor InputCLI.User
 InputCLI.User -> UI
-component InputCLI{
-
-}
-component OutputFile {
-}
-file OutputFile.database
 Backend <-> OutputFile.database
 
 @enduml

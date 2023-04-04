@@ -1,22 +1,19 @@
 package seedu.duke.command;
 
-import seedu.duke.exceptions.ExceptionMain;
-import seedu.duke.exceptions.OperationCancelException;
+import seedu.duke.Ui;
 import seedu.duke.exceptions.secrets.FolderExistsException;
 import seedu.duke.exceptions.RepeatedIdException;
 import seedu.duke.exceptions.secrets.IllegalFolderNameException;
 import seedu.duke.exceptions.secrets.IllegalSecretNameException;
-import seedu.duke.messages.InquiryMessages;
 import seedu.duke.secrets.StudentID;
 import seedu.duke.storage.SecretMaster;
-
-import java.util.HashSet;
 
 /**
  * Represents the class to give a command to add a new Student ID to the SecureNUS system.
  */
-public class AddStudentIDCommand extends AddSecretCommand {
-    public static final String KEYWORD = "o/StudentID";
+public class AddStudentIDCommand extends Command {
+    private String name;
+    private String folderName;
     private String studentId;
 
     /**
@@ -24,10 +21,13 @@ public class AddStudentIDCommand extends AddSecretCommand {
      *
      * @param input The command input entered by the user.
      */
-    public AddStudentIDCommand(String input, HashSet<String> usedNames) throws IllegalFolderNameException,
-            IllegalSecretNameException, RepeatedIdException, OperationCancelException {
-        super(input, usedNames, KEYWORD);
+    public AddStudentIDCommand(String input) {
+        this.name = extractName(input);
+        this.folderName = extractFolderName(input);
         this.studentId = inquireStudentID();
+        if (this.name == null) {
+            this.name = studentId;
+        }
     }
     public AddStudentIDCommand(StudentID studentID) {
         this.name = studentID.getName();
@@ -40,42 +40,77 @@ public class AddStudentIDCommand extends AddSecretCommand {
      *
      * @param secureNUSData
      */
-
     @Override
-    public void execute(SecretMaster secureNUSData) throws ExceptionMain {
+    public void execute(SecretMaster secureNUSData) {
         StudentID studentIdData = new StudentID(name,folderName,studentId);
         try {
             secureNUSData.addSecret(studentIdData);
         } catch (RepeatedIdException e) {
             throw new RuntimeException(e);
-        } catch (FolderExistsException e) {
-            throw new ExceptionMain(e.getMessage());
-        } catch (IllegalSecretNameException e) {
-            throw new ExceptionMain(e.getMessage());
-        } catch (IllegalFolderNameException e) {
-            throw new ExceptionMain(e.getMessage());
+        } catch (FolderExistsException | IllegalSecretNameException | IllegalFolderNameException e) {
+            throw new RuntimeException(e);
         }
         System.out.println("I have added a new Student ID:\n");
         System.out.println(
                 "name       = " + name + "\n" +
-                "Folder     = " + folderName + "\n" +
-                "Student ID = " + HIDDEN_FIELD);
+                "Student ID = " + studentId);
     }
 
+    /**
+     * Extracts the name of the Student ID from the user input.
+     *
+     * @param input The command input entered by the user.
+     * @return The name of the Student ID.
+     */
+
+    public String extractName(String input) {
+        String[] extractedNames = input.split("o/StudentID ");
+        String extractedName;
+        if (extractedNames.length == 2) {
+            if (extractedNames[1].split(" /f").length > 1) {
+                extractedName = extractedNames[1].split(" /f")[0];
+            } else {
+                extractedName = null;
+            }
+        } else {
+            extractedName = null; //Default Name
+        }
+        return extractedName;
+    }
+
+    /**
+     * Extracts the folder name of the Student ID from the user input.
+     *
+     * @param input The command input entered by the user.
+     * @return The folder name of the Student ID.
+     */
+    public String extractFolderName(String input) {
+        String extractedFolderName = "unnamed";
+        if (input.split("/f ").length > 1) {
+            extractedFolderName = input.split("/f ")[1];
+        }
+        return extractedFolderName;
+    }
 
     /**
      * Prompts the user to enter the Student ID.
      *
      * @return The Student ID entered by the user.
      */
-    public String inquireStudentID() throws OperationCancelException {
-        String studentID = inquire(InquiryMessages.STUDENT_ID, "Student ID");
-        while (!StudentID.isLegalId(studentID)) {
-            studentID = inquire(InquiryMessages.STUDENT_ID_RETRY, "Student ID");
-        }
+    public String inquireStudentID() {
+        System.out.println("Please enter your Student ID: ");
+        String studentID = Ui.readCommand();
         return studentID;
     }
 
+    /**
+    * Extracts the URL of the Student ID from the user input.
+    *
+    * @param input The command input entered by the user.
+    */
+    public String extractURL(String input) {
+        return "";
+    }
 
     /**
      * Indicates whether the command is an exit command.

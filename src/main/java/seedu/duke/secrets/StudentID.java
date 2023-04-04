@@ -5,7 +5,6 @@ package seedu.duke.secrets;
  * It inherits from the Secret class.
  */
 public class StudentID extends Secret {
-    private static final String ACCEPTED_ID_REGEX = "A[0-9]{7}[A-Z]";
     private String studentID;
 
     /**
@@ -29,10 +28,6 @@ public class StudentID extends Secret {
     public StudentID(String name, String folderName, String studentID) {
         super(name, folderName);
         this.studentID = studentID;
-    }
-
-    public static boolean isLegalId(String studentId) {
-        return studentId.matches(ACCEPTED_ID_REGEX);
     }
 
     /**

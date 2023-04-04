@@ -1,8 +1,6 @@
 package seedu.duke.secrets;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertTrue;
 
 /**
  * JUnit test for NUSNet class.
@@ -31,17 +29,6 @@ public class NUSNetTest {
         assertEquals("FolderName", nusNet.getFolderName());
         assertEquals("e081888@u.nus.edu", nusNet.getnusNetId());
         assertEquals("Lorem Ipsum 12", nusNet.getPassword());
-    }
-
-    @Test
-    public void nusNetLegalIds() {
-        assertTrue(NUSNet.isLegalId("e1234567"));
-        assertTrue(NUSNet.isLegalId("e0987654"));
-        assertTrue(NUSNet.isLegalId("E1234567"));
-        assertFalse(NUSNet.isLegalId("Aoiuyte"));
-        assertFalse(NUSNet.isLegalId("a8765439c"));
-        assertFalse(NUSNet.isLegalId("a876543uc"));
-        assertFalse(NUSNet.isLegalId("S8765439S"));
     }
 
 }

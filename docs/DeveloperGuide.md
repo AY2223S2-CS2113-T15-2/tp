@@ -10,7 +10,7 @@
 
 ## [AddressBook Template](https://se-education.org/addressbook-level3/DeveloperGuide.html#proposed-undoredo-feature)
 
-The format of this Developer’s guide (DG) as well as some basic support is inspired/ taken from the AddressBook 
+The format of this Developer’s guide (DG) as well as some of the basic support is inspired/ taken from the AddressBook 
 project’s DG.
 
 
@@ -38,7 +38,7 @@ If you plan to use Intellij IDEA (highly recommended):
 
 
 
-1. **Configure the JDK:** Follow the guide [[se-edu/guides] IDEA: Configuring the JDK](https://se-education.org/guides/tutorials/intellijJdk.html) to ensure Intellij is configured to use JDK 11.
+1. **Configure the JDK:** Follow the guide [[se-edu/guides] IDEA: Configuring the JDK](https://se-education.org/guides/tutorials/intellijJdk.html) to to ensure Intellij is configured to use JDK 11.
 2. **Import the project as a Gradle project:** Follow the guide [[se-edu/guides] IDEA: Importing a Gradle project](https://se-education.org/guides/tutorials/intellijImportGradleProject.html) to import the project into IDEA. \
 
 <img src="./DGDiagramsCreator/DGUsedDiagrams/ExclamationMark.png" width="4%" />
@@ -154,14 +154,14 @@ Command is an abstract class that is inherited by various components such as Add
 
 <img src="./DGDiagramsCreator/DGUsedDiagrams/CommandComponent.png" width="100%" />
 
-The Command consist of Command abstract class that handles all of its command constructors and executions through its child classes. The user inputs command in Ui, that is parsed in Parser, and then instantiated and executed in Command classes.
+The Command consist of Command abstract class that handles all of its command constructors and executions through its child classes. The user inputs command in Ui, that is parsed in Parser, and then institiated in and then executed in Command classes.
 
 
 ## Backend Component
 <img src="./DGDiagramsCreator/DGUsedDiagrams/BackendComponent.png" width="100%" />
 
 
-The backend manages the saving and loading of data from the database.txt file. To do so, it collates and organises information stored in the SecretMaster and encrypts it into the database.txt. When starting up, it will decrypt the database.txt file and transfer its data into the SecretMaster.
+The backend manages the saving and loading of data from the database.txt file. To do so, it collates and organises information stored in the SecretMaster and encrypts it into the database.txt. When starting up, it will decrypt the database.txt file and transfer it’s data into the SecretMaster.
 
 
 ---
@@ -418,7 +418,7 @@ The backend manages the saving and loading of data from the database.txt file. T
 * Should be user-friendly, with intuitive commands that makes it easy for users to create, store, and retrieve passwords.
 * Should be compatible with various operating systems as long as Java 11 or above is installed.
 * Should be reliable and operational all the time with little-to-no bugs or errors.
-* Should be able to store at least 1000 passwords without compromising performance or security.
+* Should be able to at least 1000 passwords without compromising performance or security.
 * Should be maintainable, with a clear and well-documented codebase that makes it easy to fix bugs and add new features.
 * Must ensure that user data is not shared with third parties without user consent.
 * Should be secure, using strong encryption to protect user passwords and data from being hacked or stolen.

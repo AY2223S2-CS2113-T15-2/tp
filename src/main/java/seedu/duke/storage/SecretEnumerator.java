@@ -167,7 +167,7 @@ public class SecretEnumerator {
      *
      * @return a HashSet containing all folder names
      */
-    public HashSet<String> getFolders() {
+    public HashSet getFolders() {
         HashSet<String> folderHashset = new HashSet();
         for (String name : this.folders.keySet()) {
             folderHashset.add(name);
